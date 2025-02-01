@@ -37,24 +37,24 @@ async function run() {
     //creating collection
     const userCollection = client.db("UserInventory").collection("users");
     const recipeCollection = client.db("recipeInventory").collection("recipes");
+    
 
     app.post("/register", async (req, res) => {
         // check if email already exists
         const data = req.body;
-        const existing = await userCollections.findOne({ email: data.email });
+        const existing = await userCollection.findOne({ email: data.email });
         if (existing) {
           res.status(400).send("Email already exists");
           return;
         }
-        const result = await userCollections.insertOne(data);
+        const result = await userCollection.insertOne(data);
         console.log(result)
-        const recipeResult = await recipeCollections.insertOne({recipes: [], user: result.insertedId})
         res.send(result)
       })
 
       app.post("/login", async (req, res) => {
         const { email, password } = req.body;
-        const user = await userCollections.findOne({ email, password });
+        const user = await userCollection.findOne({ email, password });
   
         if (user) {
           // User exists and credentials are correct
@@ -66,7 +66,7 @@ async function run() {
       });
 
       app.get("/all-users", async (req, res) => {
-        const users = userCollections.find();
+        const users = userCollection.find();
         const result = await users.toArray();
         res.send(result);
       })
