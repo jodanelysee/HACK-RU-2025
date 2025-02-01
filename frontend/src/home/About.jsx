@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-
+import food from '../assets/food-image.png'
 const About = () => {
 
   return (
@@ -35,20 +35,26 @@ const About = () => {
         <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
           <div className="lg:pr-4">
             <div className="lg:max-w-lg">
-              <p className="text-base font-semibold leading-7 text-indigo-600">Redefining The Manga Experience</p>
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Welcome to Manga Mania!</h1>
+              <p className="text-base font-semibold leading-7 text-green-600">Redefining The Cooking Experience</p>
+              <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Welcome to PrepNGo!</h1>
               <p className="mt-6 text-xl leading-8 text-gray-700">
-              Welcome to Manga Mania! You have now found the anime community's best kept secret, stand tall and be proud! At Manga Mania, 
+              Welcome to PrepNGo! You have now found the anime community's best kept secret, stand tall and be proud! At Manga Mania, 
               you and a community of manga fans will be able to sell your manga and/or you will be able to buy from others.
               </p>
             </div>
           </div>
         </div>
+        <div className="-ml-12 -mt-12 p-12 lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden">
+          <img className="w-[48rem] max-w-none rounded-xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]"
+            src={food}
+            alt=""
+          />
+        </div>
         <div className="lg:col-span-2 lg:col-start-1 lg:row-start-2 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
           <div className="lg:pr-4">
             <div className="max-w-xl text-base leading-7 text-gray-700 lg:max-w-lg">
               <p>
-                Brought to you by Jodan Elysee, a rising senior software engineering student at the University of Monmouth, University. Manga Mania has been implementind using
+                Brought to you by Jodan Elysee, Joshua Polcarp, & Gregory Dort. a rising senior software engineering student at the University of Monmouth, University. Manga Mania has been implementind using
                 the MERN Stack, which is a full stack web development framework. With the help of Vite, Tailwind.css, and swiper.js for the frontend component,
                 Jodan has been able to design a fully funtioning and responsive web application. Please enjoy!
               </p>

@@ -26,7 +26,7 @@ const Login = () => {
 
             if (response.ok) {
                 alert(data.message); // Display success message from server
-                window.location.href = "http://localhost:5173/";
+                window.location.href = "http://localhost:5173/home";
                 //set userID in local storage
                 localStorage.setItem("userID", data.user._id);
                 console.log(data);
