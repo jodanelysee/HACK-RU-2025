@@ -29,7 +29,7 @@ const Navbar = () => {
     <header className='w-full bg-transparent fixed top-0 left-0 right-0 transition-all ease-in duration-300'>
       <nav className={`py-4 lg:px-24 px-4`}>
         <div className='flex justify-between items-center text-base gap-8'>
-          <Link to="/" className='text-2x1 font-bold text-green-600 flex items-center gap-2'>
+          <Link to="/home" className='text-2x1 font-bold text-green-600 flex items-center gap-2'>
             <MdOutlineFoodBank className='inline-block' />PrepNGo
           </Link>
 
