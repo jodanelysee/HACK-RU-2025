@@ -36,7 +36,8 @@ async function run() {
 
     //creating collection
     const userCollection = client.db("UserInventory").collection("users");
-    const recipeCollection = client.db("recipeInventory").collection("recipes");
+    const recipeCollection = client.db("RecipeInventory").collection("recipes")
+    const savedRecipiesCollection = client.db("SavedRecipeInventory").collection("SavedRecipes");
     
 
     app.post("/register", async (req, res) => {
@@ -52,6 +53,18 @@ async function run() {
         res.send(result)
       })
 
+      app.post("/recipes", async (req, res) => {
+        const data = req.body;
+        const existing = await recipeCollection.findOne({ name: data.name });
+        if (existing) {
+            res.status(400).send("Recipe already exists");
+            return;
+        }
+        const result = await recipeCollection.insertOne(data);
+        console.log(result)
+        res.send(result)
+      })
+
       app.post("/login", async (req, res) => {
         const { email, password } = req.body;
         const user = await userCollection.findOne({ email, password });
@@ -62,6 +75,30 @@ async function run() {
         } else {
           // User does not exist or credentials are incorrect
           res.status(401).json({ success: false, message: "Incorrect email or password" });
+        }
+      });
+
+      app.post("/saved", async (req, res) => {
+        const data = req.body;
+        const userId = data.userId;
+        const recipeId = data.recipeId;
+        try {
+          // Check if the saved rec exists for the user
+          const existingSavedRecipes = await savedRecipiesCollection.findOne({ user: new ObjectId(userId) });
+          if (!existingSavedRecipes) {
+            console.log("User's cart not found.");
+            return res.status(404).send("User's saved recipes not found.");
+          }
+          // Update the existing cart with the new book ID
+          const updatedSavedRecipes = await existingSavedRecipes.updateOne(
+            { user: new ObjectId(userId) },
+            { $push: { recipies: new ObjectId(recipeId) } }
+          );
+          console.log("Cart updated:", updatedSavedRecipes.modifiedCount);
+          return res.send(updatedSavedRecipes);
+        } catch (error) {
+          console.error("Error:", error.message);
+          return res.status(500).send("Failed to update cart.");
         }
       });
 
