@@ -99,7 +99,17 @@ useEffect(() => {
                       ))}
                     </ul>
                     <p className="font-semibold mt-2">Instructions:</p>
-                    <p>{recipe.instructions}</p>
+                    <p 
+                        className="overflow-hidden text-ellipsis whitespace-pre-line" 
+                        style={{
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: 4, // Limit to 4 lines
+                            overflow: 'hidden'
+                                }}
+                    >
+                        {recipe.instructions}
+                    </p>
                     {recipe.videoURL && (
                       <div className="mt-2">
                         <a
