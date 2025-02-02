@@ -21,7 +21,7 @@ const Navbar = () => {
   // Nav items
   const navItems = [
     { link: "Home", path: "/home" },
-    { link: "Save Recipes", path: "/saved" },
+    { link: "Saved Recipes", path: "/saved" },
     { link: "About", path: "/about" },
   ];
 
@@ -29,7 +29,7 @@ const Navbar = () => {
     <header className='w-full bg-transparent fixed top-0 left-0 right-0 transition-all ease-in duration-300'>
       <nav className={`py-4 lg:px-24 px-4`}>
         <div className='flex justify-between items-center text-base gap-8'>
-          <Link to="/home" className='text-2x1 font-bold text-green-600 flex items-center gap-2'>
+          <Link to="/home" className='text-2x1 font-bold text-black flex items-center gap-2'>
             <MdOutlineFoodBank className='inline-block' />PrepNGo
           </Link>
 
@@ -47,7 +47,7 @@ const Navbar = () => {
             <span className='text-base font-semibold text-black'>{username}</span>
             <button
               onClick={handleLogout}
-              className='text-base font-semibold text-gray-500 hover:text-black border px-4 py-2 rounded-md border-green-600 bg-white hover:bg-green-600'
+              className='text-base font-semibold text-gray-500 hover:text-white border px-4 py-2 rounded-md border-black bg-white hover:bg-black'
             >
               Logout
             </button>
@@ -72,7 +72,7 @@ const Navbar = () => {
           <span className='block text-base text-black uppercase cursor-pointer mt-4'>{username}</span>
           <button
             onClick={handleLogout}
-            className='block text-base text-black uppercase cursor-pointer mt-4 hover:text-green-600'
+            className='block text-base text-black uppercase cursor-pointer mt-4 hover:text-white'
           >
             Logout
           </button>

@@ -35,11 +35,10 @@ const About = () => {
         <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
           <div className="lg:pr-4">
             <div className="lg:max-w-lg">
-              <p className="text-base font-semibold leading-7 text-green-600">Redefining The Cooking Experience</p>
+              <p className="text-base font-semibold leading-7 text-black-600">Redefining The Cooking Experience</p>
               <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Welcome to PrepNGo!</h1>
               <p className="mt-6 text-xl leading-8 text-gray-700">
-              Welcome to PrepNGo! You have now found the anime community's best kept secret, stand tall and be proud! At Manga Mania, 
-              you and a community of manga fans will be able to sell your manga and/or you will be able to buy from others.
+              You have now discovered the ultimate tool for culinary creativity—stand tall and be proud! With AI Chef, you and a community of food enthusiasts can enter ingredients and let our AI generate unique, delicious recipes just for you.
               </p>
             </div>
           </div>
@@ -54,9 +53,7 @@ const About = () => {
           <div className="lg:pr-4">
             <div className="max-w-xl text-base leading-7 text-gray-700 lg:max-w-lg">
               <p>
-                Brought to you by Jodan Elysee, Joshua Polcarp, & Gregory Dort. a rising senior software engineering student at the University of Monmouth, University. Manga Mania has been implementind using
-                the MERN Stack, which is a full stack web development framework. With the help of Vite, Tailwind.css, and swiper.js for the frontend component,
-                Jodan has been able to design a fully funtioning and responsive web application. Please enjoy!
+              Brought to you by Jodan Elysee, Joshua Polcarp, & Gregory Dort, AI Chef has been built using the MERN Stack, a powerful full-stack web development framework. With the help of Vite, Tailwind CSS, and Swiper.js for the frontend. Let the AI cook up something amazing—enjoy!
               </p>
             </div>
           </div>

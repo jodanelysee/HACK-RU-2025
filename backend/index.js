@@ -22,7 +22,7 @@ const uri = "mongodb+srv://user:pRBB2km5r7BKPur7@hackru.v2fpn.mongodb.net/?retry
 const client = new MongoClient(uri, {
     serverApi: {
       version: ServerApiVersion.v1,
-      strict: true,
+      strict: false,
       deprecationErrors: true,
     },
     tls: true, // Enable TLS/SSL
@@ -38,6 +38,7 @@ async function run() {
     const userCollection = client.db("UserInventory").collection("users");
     const recipeCollection = client.db("RecipeInventory").collection("recipes")
     const savedRecipiesCollection = client.db("SavedRecipeInventory").collection("SavedRecipes");
+    const ObjectId = require('mongodb').ObjectId;
     
 
     app.post("/register", async (req, res) => {
@@ -86,27 +87,116 @@ async function run() {
           // Check if the saved rec exists for the user
           const existingSavedRecipes = await savedRecipiesCollection.findOne({ user: new ObjectId(userId) });
           if (!existingSavedRecipes) {
-            console.log("User's cart not found.");
+            console.log("User's saved recipes are not found.");
             return res.status(404).send("User's saved recipes not found.");
           }
-          // Update the existing cart with the new book ID
           const updatedSavedRecipes = await existingSavedRecipes.updateOne(
             { user: new ObjectId(userId) },
             { $push: { recipies: new ObjectId(recipeId) } }
           );
-          console.log("Cart updated:", updatedSavedRecipes.modifiedCount);
+          console.log("Saved Recipes updated:", updatedSavedRecipes.modifiedCount);
           return res.send(updatedSavedRecipes);
         } catch (error) {
           console.error("Error:", error.message);
-          return res.status(500).send("Failed to update cart.");
+          return res.status(500).send("Failed to update saved recipes.");
         }
       });
+
+      app.get("/saved/:id", async (req, res) => {
+        try {
+            const { id } = req.params;
+            console.log("Fetching saved recipes for user ID:", id); // Debugging
+    
+            // Convert ID string to ObjectId
+            const savedRecipes = await savedRecipiesCollection.findOne({ user: new ObjectId(id) });
+    
+            if (!savedRecipes) {
+                return res.status(404).json({ message: "Saved Recipes not found for the user ID." });
+            }
+    
+            res.json(savedRecipes);
+        } catch (error) {
+            console.error("Error fetching saved recipes:", error);
+            res.status(500).json({ message: "Server error." });
+        }
+    });
+
+      app.get("/all-recipes", async (req, res) => {
+        let query = {};
+        if (req.query?.userID) {
+          query.user = new ObjectId(req.query.userID);
+        }
+        if (req.query?.ingredients) {
+          query.ingredients = req.query.ingredients;
+        }
+        const result = await recipeCollection.find(query).toArray();
+        res.send(result);
+      })
+
+      app.delete("/saved/:userId/:recipeId", async (req, res) => {
+        const { userId, recipeId } = req.params;
+        try {
+          // Find the user's saved recipes
+          const savedRecipes = await savedRecipiesCollection.findOne({ user: new ObjectId(userId) });
+          if (!savedRecipes) {
+            return res.status(404).send("User's saved recipes not found.");
+          }
+      
+          // Remove the recipe from the saved recipes array
+          const updatedSavedRecipes = await savedRecipiesCollection.updateOne(
+            { user: new ObjectId(userId) },
+            { $pull: { recipies: new ObjectId(recipeId) } }
+          );
+      
+          if (updatedSavedRecipes.modifiedCount === 0) {
+            return res.status(404).send("Recipe not found in saved recipes.");
+          }
+      
+          res.send({ success: true, message: "Recipe removed from saved recipes." });
+        } catch (error) {
+          console.error("Error:", error.message);
+          res.status(500).send("Failed to delete recipe.");
+        }
+      });
+
+    app.get("/recipe/:id", async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: new ObjectId(id) };
+        const result = await recipeCollection.findOne(filter);
+        res.send(result);
+      })
 
       app.get("/all-users", async (req, res) => {
         const users = userCollection.find();
         const result = await users.toArray();
         res.send(result);
       })
+
+      app.get("/user/:id", async (req, res) => {
+        const id = req.params.id;
+        const filter = { _id: new ObjectId(id) };
+        const result = await userCollection.findOne(filter);
+        res.send(result);
+      })
+
+      app.get("/recipe-search", async (req, res) => {
+        const query = req.query.search;
+        const result = await recipeCollection.aggregate([
+            {
+                $search: {
+                    "index": "searchByIngredient", // Use your index name here
+                    "phrase": {
+                        "query": query,
+                        "path": "ingredients", // Field to search in
+                        "slop": 2 // Optional: allows for proximity matching
+                    }
+                }
+            }
+        ]).toArray();
+    
+        res.send(result);
+    });
+    
 
 
     await client.db("admin").command({ ping: 1 });
