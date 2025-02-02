@@ -24,6 +24,15 @@ const Search = () => {
     }
 };
 
+useEffect(() => {
+    // check to see if userID is in local storage
+    const userID = localStorage.getItem('userID');
+    if (!userID) {
+      // if userID is in local storage, redirect to login page
+      window.location.replace('http://localhost:5173/login');
+    }
+  });
+
   useEffect(() => {
     console.log("Loader Data in Component:", loaderData);
     if (loaderData) {

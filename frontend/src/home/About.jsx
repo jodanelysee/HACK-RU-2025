@@ -2,6 +2,15 @@ import React, { useEffect } from 'react'
 import food from '../assets/food-image.png'
 const About = () => {
 
+    useEffect(() => {
+        // check to see if userID is in local storage
+        const userID = localStorage.getItem('userID');
+        if (!userID) {
+          // if userID is in local storage, redirect to login page
+          window.location.replace('http://localhost:5173/login');
+        }
+      });
+
   return (
     <div className='mt-20'>
         <div className="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">

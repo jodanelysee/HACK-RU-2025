@@ -21,7 +21,7 @@ const Banner = () => {
     };
     
     return (
-        <div className='flex flex-col w-full min-h-screen bg-yellow-100 items-center justify-center py-20'>
+        <div className='flex flex-col w-full min-h-screen bg-gradient-to-r from-yellow-100 to-orange-300 items-center justify-center py-20'>
             <h2 className='text-5xl font-bold text-black text-center mb-6'>Welcome to PrepNGo</h2>
             
             <img src={pastaImg} alt="Pasta Boiling" className="w-80 h-80 object-cover rounded-full mb-6" />

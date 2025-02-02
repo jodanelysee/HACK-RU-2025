@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLoaderData } from 'react-router';
 
 const SingleRecipe = () => {
   const { _id, name, imageURL, ingredients, instructions, videoURL } = useLoaderData();
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    // check to see if userID is in local storage
+    const userID = localStorage.getItem('userID');
+    if (!userID) {
+      // if userID is in local storage, redirect to login page
+      window.location.replace('http://localhost:5173/login');
+    }
+  });
 
   const handleAddToSaved = async (event) => {
     event.preventDefault();

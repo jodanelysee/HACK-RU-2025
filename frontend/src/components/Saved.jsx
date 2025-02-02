@@ -11,6 +11,15 @@ const Saved = () => {
   const navigate = useNavigate(); // Initialize navigate function
 
   useEffect(() => {
+    // check to see if userID is in local storage
+    const userID = localStorage.getItem('userID');
+    if (!userID) {
+      // if userID is in local storage, redirect to login page
+      window.location.replace('http://localhost:5173/login');
+    }
+  });
+
+  useEffect(() => {
     const fetchSavedRecipes = async () => {
       try {
         const userId = localStorage.getItem("userID");
@@ -71,7 +80,7 @@ const Saved = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="p-4">
+    <div className="flex flex-col w-full min-h-screen p-4 bg-gradient-to-r from-yellow-100 to-orange-300">
       <h1 className="text-2xl font-bold mb-4 mt-20 flex justify-center">Your Saved Recipes</h1>
 
       <div className="mb-4">
