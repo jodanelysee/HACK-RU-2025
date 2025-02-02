@@ -1,4 +1,4 @@
-Welcome to PrepNGp. Brought to you By Jodan Elysee, Gregory Dort and Joshua PolyCarpe.
+Welcome to PrepNGp. Brought to you By Jodan Elysee and Gregory Dort!
 
 PrepNGo is a website where users can list out ingredients in a search bar, and the site will return a list of dishes including the ingredients the user sent. Users can create accounts to save the recipes as well for later use. Each recipe will list all the ingredients needed, instructions to make the dish, and a video for visual learners.
 
