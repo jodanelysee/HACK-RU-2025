@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import pastaImg from '../assets/pasta.jpg';
+import logoIMG from '../assets/PrepNGo.png';
 
 const Banner = () => {
     const [searchTerm, setSearchTerm] = useState("");

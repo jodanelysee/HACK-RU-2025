@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Saved = () => {
   const [savedRecipes, setSavedRecipes] = useState([]);
@@ -6,25 +7,20 @@ const Saved = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [recipesPerPage] = useState(5); // Number of recipes per page
+  const [recipesPerPage] = useState(5);
+  const navigate = useNavigate(); // Initialize navigate function
 
-  // Fetch saved recipes for the logged-in user
   useEffect(() => {
     const fetchSavedRecipes = async () => {
       try {
         const userId = localStorage.getItem("userID");
-        if (!userId) {
-          throw new Error("User not logged in");
-        }
+        if (!userId) throw new Error("User not logged in");
 
-        // Fetch saved recipes from the backend
         const response = await fetch(`http://localhost:8000/saved/${userId}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch saved recipes");
-        }
+        if (!response.ok) throw new Error("Failed to fetch saved recipes");
 
         const data = await response.json();
-        setSavedRecipes(data.recipies || []); // Ensure recipies is an array
+        setSavedRecipes(data.recipes || []);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -35,24 +31,21 @@ const Saved = () => {
     fetchSavedRecipes();
   }, []);
 
-  // Handle recipe deletion
+  const handleRecipeClick = (recipeId) => {
+    navigate(`/recipe/${recipeId}`); // Navigate to recipe details page
+  };
+
   const handleDeleteRecipe = async (recipeId) => {
     try {
       const userId = localStorage.getItem("userID");
-      if (!userId) {
-        throw new Error("User not logged in");
-      }
+      if (!userId) throw new Error("User not logged in");
 
-      // Send a DELETE request to remove the recipe
       const response = await fetch(`http://localhost:8000/saved/${userId}/${recipeId}`, {
         method: 'DELETE',
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to delete recipe");
-      }
+      if (!response.ok) throw new Error("Failed to delete recipe");
 
-      // Remove the deleted recipe from the state
       setSavedRecipes((prevRecipes) =>
         prevRecipes.filter((recipe) => recipe._id !== recipeId)
       );
@@ -61,7 +54,6 @@ const Saved = () => {
     }
   };
 
-  // Filter recipes based on search term
   const filteredRecipes = savedRecipes.filter((recipe) =>
     recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     recipe.ingredients.some((ingredient) =>
@@ -69,27 +61,19 @@ const Saved = () => {
     )
   );
 
-  // Pagination logic
   const indexOfLastRecipe = currentPage * recipesPerPage;
   const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
   const currentRecipes = filteredRecipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
 
-  // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Your Saved Recipes</h1>
+      <h1 className="text-2xl font-bold mb-4 mt-20 flex justify-center">Your Saved Recipes</h1>
 
-      {/* Search Bar */}
       <div className="mb-4">
         <input
           type="text"
@@ -104,7 +88,6 @@ const Saved = () => {
         <p>No saved recipes found.</p>
       ) : (
         <>
-          {/* Table */}
           <table className="min-w-full bg-white border border-gray-300">
             <thead>
               <tr>
@@ -116,7 +99,11 @@ const Saved = () => {
             </thead>
             <tbody>
               {currentRecipes.map((recipe) => (
-                <tr key={recipe._id} className="hover:bg-gray-50">
+                <tr
+                  key={recipe._id}
+                  className="hover:bg-gray-50 cursor-pointer"
+                  onClick={() => handleRecipeClick(recipe._id)} // Navigate on click
+                >
                   <td className="py-2 px-4 border-b">{recipe.name}</td>
                   <td className="py-2 px-4 border-b">
                     <ul className="list-disc list-inside">
@@ -128,7 +115,10 @@ const Saved = () => {
                   <td className="py-2 px-4 border-b">{recipe.instructions}</td>
                   <td className="py-2 px-4 border-b">
                     <button
-                      onClick={() => handleDeleteRecipe(recipe._id)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent navigation when clicking delete
+                        handleDeleteRecipe(recipe._id);
+                      }}
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                     >
                       Delete
@@ -139,7 +129,6 @@ const Saved = () => {
             </tbody>
           </table>
 
-          {/* Pagination */}
           <div className="flex justify-center mt-4">
             {Array.from({ length: Math.ceil(filteredRecipes.length / recipesPerPage) }).map((_, index) => (
               <button

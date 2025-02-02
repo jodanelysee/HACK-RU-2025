@@ -37,7 +37,7 @@ async function run() {
     //creating collection
     const userCollection = client.db("UserInventory").collection("users");
     const recipeCollection = client.db("RecipeInventory").collection("recipes")
-    const savedRecipiesCollection = client.db("SavedRecipeInventory").collection("SavedRecipes");
+    const savedrecipesCollection = client.db("SavedInventory").collection("saved");
     const ObjectId = require('mongodb').ObjectId;
     
 
@@ -80,46 +80,43 @@ async function run() {
       });
 
       app.post("/saved", async (req, res) => {
-        const data = req.body;
-        const userId = data.userId;
-        const recipeId = data.recipeId;
+        const { userId, recipeId } = req.body;
         try {
-          // Check if the saved rec exists for the user
-          const existingSavedRecipes = await savedRecipiesCollection.findOne({ user: new ObjectId(userId) });
-          if (!existingSavedRecipes) {
-            console.log("User's saved recipes are not found.");
-            return res.status(404).send("User's saved recipes not found.");
-          }
-          const updatedSavedRecipes = await existingSavedRecipes.updateOne(
+          const updatedSavedRecipes = await savedrecipesCollection.updateOne(
             { user: new ObjectId(userId) },
-            { $push: { recipies: new ObjectId(recipeId) } }
+            { $addToSet: { recipes: new ObjectId(recipeId) } }, // Use `$addToSet` to prevent duplicates
+            { upsert: true } // Create the document if it doesn't exist
           );
-          console.log("Saved Recipes updated:", updatedSavedRecipes.modifiedCount);
-          return res.send(updatedSavedRecipes);
+      
+          res.send(updatedSavedRecipes);
         } catch (error) {
           console.error("Error:", error.message);
-          return res.status(500).send("Failed to update saved recipes.");
+          res.status(500).send("Failed to update saved recipes.");
         }
       });
+      
 
       app.get("/saved/:id", async (req, res) => {
         try {
-            const { id } = req.params;
-            console.log("Fetching saved recipes for user ID:", id); // Debugging
-    
-            // Convert ID string to ObjectId
-            const savedRecipes = await savedRecipiesCollection.findOne({ user: new ObjectId(id) });
-    
-            if (!savedRecipes) {
-                return res.status(404).json({ message: "Saved Recipes not found for the user ID." });
-            }
-    
-            res.json(savedRecipes);
+          const { id } = req.params;
+          const savedRecipes = await savedrecipesCollection.findOne({ user: new ObjectId(id) });
+      
+          if (!savedRecipes) {
+            return res.status(404).json({ message: "Saved Recipes not found for the user ID." });
+          }
+      
+          // Fetch full recipe details
+          const recipes = await recipeCollection.find({
+            _id: { $in: savedRecipes.recipes } // Use `$in` to find all matching recipe IDs
+          }).toArray();
+      
+          res.json({ recipes });
         } catch (error) {
-            console.error("Error fetching saved recipes:", error);
-            res.status(500).json({ message: "Server error." });
+          console.error("Error fetching saved recipes:", error);
+          res.status(500).json({ message: "Server error." });
         }
-    });
+      });
+      
 
       app.get("/all-recipes", async (req, res) => {
         let query = {};
@@ -137,15 +134,15 @@ async function run() {
         const { userId, recipeId } = req.params;
         try {
           // Find the user's saved recipes
-          const savedRecipes = await savedRecipiesCollection.findOne({ user: new ObjectId(userId) });
+          const savedRecipes = await savedrecipesCollection.findOne({ user: new ObjectId(userId) });
           if (!savedRecipes) {
             return res.status(404).send("User's saved recipes not found.");
           }
       
           // Remove the recipe from the saved recipes array
-          const updatedSavedRecipes = await savedRecipiesCollection.updateOne(
+          const updatedSavedRecipes = await savedrecipesCollection.updateOne(
             { user: new ObjectId(userId) },
-            { $pull: { recipies: new ObjectId(recipeId) } }
+            { $pull: { recipes: new ObjectId(recipeId) } }
           );
       
           if (updatedSavedRecipes.modifiedCount === 0) {
