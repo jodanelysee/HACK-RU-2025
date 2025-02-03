@@ -47,7 +47,7 @@ const About = () => {
               <p className="text-base font-semibold leading-7 text-black-600">Redefining The Cooking Experience</p>
               <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Welcome to PrepNGo!</h1>
               <p className="mt-6 text-xl leading-8 text-gray-700">
-              You have now discovered the ultimate tool for culinary creativity—stand tall and be proud! With AI Chef, you and a community of food enthusiasts can enter ingredients and let our AI generate unique, delicious recipes just for you.
+              You have now discovered the ultimate tool for culinary creativity. With AI Chef, you and a community of food enthusiasts can enter ingredients and let our AI generate unique, delicious recipes just for you.
               </p>
             </div>
           </div>
@@ -62,7 +62,7 @@ const About = () => {
           <div className="lg:pr-4">
             <div className="max-w-xl text-base leading-7 text-gray-700 lg:max-w-lg">
               <p>
-              Brought to you by Jodan Elysee, Joshua Polcarp, & Gregory Dort, AI Chef has been built using the MERN Stack, a powerful full-stack web development framework. With the help of Vite, Tailwind CSS, and Swiper.js for the frontend. Let the AI cook up something amazing—enjoy!
+              Brought to you by Jodan Elysee & Gregory Dort, AI Chef has been built using the MERN Stack, a powerful full-stack web development framework. With the help of Vite, Tailwind CSS, and Swiper.js for the frontend. Let the AI cook up something amazing—enjoy!
               </p>
             </div>
           </div>
