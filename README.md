@@ -6,8 +6,8 @@ This project uses the MERN Stack (MongoDB, express.js, react, node.js). We are a
 
 Later variations of this project will use an AI component to return dishes for the user.
 
-To run the porject locally, you must run "npm start" in the backend folder and run "npm run dev" in the frontend folder. You might have to npm dependencies in the frontend and backend folders. 
+To run the project locally, you must run "npm start" in the backend folder and run "npm run dev" in the frontend folder. You might have to install npm dependencies in the frontend and backend folders. 
 
-For the Hackathon, you must use a hotspot when running the backend to connect to mongoDB, you must be connected to a hotspot since rutgers wifi has mongoDB blocked. 
+For the Hackathon, you must use a hotspot when running the backend to connect to mongoDB, you must be connected to a hotspot since rutgers wifi has mongoDB blocked. Otherwise you should be able to run the project normally on your wifi network.
 
 Hope you guys Enjoy!
