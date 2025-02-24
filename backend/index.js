@@ -7,8 +7,6 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 
-//mongodb password: pRBB2km5r7BKPur7
-
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
