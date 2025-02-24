@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 // Connect to MongoDB
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://user:pRBB2km5r7BKPur7@hackru.v2fpn.mongodb.net/?retryWrites=true&w=majority&appName=HackRU";
+const uri = "mongodb+srv://user:pWD0Oe6j6UKbbzS8@hackru.v2fpn.mongodb.net/?retryWrites=true&w=majority&appName=HackRU";
 
 const client = new MongoClient(uri, {
     serverApi: {
